@@ -232,7 +232,7 @@ def main():
     amount_of_people = 500
     time_to_immune = 3
     vaccination_limit = 150
-    vaccination_percent = 0.7
+    vaccination_percent = 0.5
     adoption_rate = 10
     mortality_rate = 0.05
     immunisation_length = 10
