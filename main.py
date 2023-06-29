@@ -182,13 +182,8 @@ def vaccinate_population(
     """
     infected_or_immune = sum((human.is_infected or human.is_immune) for human in people)
     if infected_or_immune >= vaccination_limit:
-        non_sick_people = [
-            human
-            for human in people
-            if not human.is_infected and human.vaccination_timestamp == 0
-        ]
-        to_be_vaccinated = int(len(non_sick_people) * vaccination_percent)
-        for human in random.sample(non_sick_people, to_be_vaccinated):
+        to_be_vaccinated = int(len(people) * vaccination_percent)
+        for human in random.sample(people, to_be_vaccinated):
             human.vaccination_timestamp = current_time + random.uniform(
                 0, adoption_rate
             )
@@ -205,10 +200,11 @@ def update_human_status(human, simulation_time):
         simulation_time (float): in game time
     """
     if human.vaccination_timestamp and human.vaccination_timestamp <= simulation_time:
-        human.is_immune = True
-        human.color = (0, 0, 255)
-        human.is_vaccinated = True
-        human.vaccination_timestamp = 0
+        if human.is_infected == False:
+            human.is_immune = True
+            human.color = (0, 0, 255)
+            human.is_vaccinated = True
+            human.vaccination_timestamp = 0
 
 
 def loss_of_immunisation(human, simulation_time, immunisation_length):
@@ -232,9 +228,9 @@ def main():
     amount_of_people = 500
     time_to_immune = 3
     vaccination_limit = 150
-    vaccination_percent = 0.5
+    vaccination_percent = 0.7
     adoption_rate = 10
-    mortality_rate = 0.05
+    mortality_rate = 0.1
     immunisation_length = 10
 
     # Setting the screen and the in game clock
